@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Android.App;
 using MauiAppFit.Models;
 using SQLite;
 
@@ -47,9 +48,21 @@ namespace MauiAppFit.Helpers
                 model.Observacoes,
                 model.Id
             );
-            
-
-
         }
+
+        public Task<int> Delete(int id)
+        {
+            return _db.Table<Atividade>().DeleteAsync(i => i.Id == id);
+        }
+
+        public Task<List<Atividade>> Search(string q)
+        {
+            string sql = "select * from atividade " +
+                "where Descricao like '%" + q + "%'";
+
+            return _db.QueryAsync<Atividade>(sql);
+        }
+
+       
     }
 }
